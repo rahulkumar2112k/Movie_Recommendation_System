@@ -110,10 +110,9 @@ st.markdown(
     <h1 style='text-align: center; font-size: 28px; white-space: nowrap;'>
         🎬 Movie Recommendation 🎬
     </h1>
-    """
+    """,
     unsafe_allow_html=True
 )
-
 
 selected_movie_name = st.selectbox(
     "Choose a movie:",
