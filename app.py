@@ -3,13 +3,29 @@ import pickle
 import requests
 import random
 import time
+import gdown
+import os
 
 # -----------------------------
 # Load data
 # -----------------------------
+# Load movies.pkl directly from repo
 data = pickle.load(open('movies.pkl', 'rb'))
 movies_list = data['title'].values
-cosine_sim = pickle.load(open('similarity.pkl', 'rb'))
+
+# Google Drive file ID for similarity.pkl
+
+file_id = "1Rxlc2ixnwlyamZ5r93sOVtpi3WA6s9-5"
+url = f"https://drive.google.com/uc?id={file_id}"
+output = "similarity.pkl"
+
+# Download similarity.pkl from Google Drive if not already present
+if not os.path.exists(output):
+    gdown.download(url, output, quiet=False)
+
+# Load similarity.pkl
+with open(output, "rb") as f:
+    cosine_sim = pickle.load(f)
 
 # -----------------------------
 # Funny fetching messages
@@ -39,7 +55,11 @@ DEFAULT_POSTER = None
 
 def fetch_poster(movie_id, placeholder):
     # Show a random funny fetching message while fetching
-    placeholder.markdown(f"<p style='color:#00FF00; font-family:Courier New; font-weight:bold; font-size:20px;'>{random.choice(funny_messages)}</p>", unsafe_allow_html=True)
+    placeholder.markdown(
+        f"<p style='color:#00FF00; font-family:Courier New; font-weight:bold; font-size:20px;'>"
+        f"{random.choice(funny_messages)}</p>",
+        unsafe_allow_html=True
+    )
     time.sleep(0.10)  # simulate network delay
     url = f"https://api.themoviedb.org/3/movie/{movie_id}?api_key=37762fdc01e2c69cb76ef60d011d32d9&language=en-US"
     try:
@@ -105,7 +125,7 @@ if st.button("Recommend Movies"):
         card_width = "100%"
 
         for row in range(4):
-            cols = st.columns([1,1,1], gap="large")
+            cols = st.columns([1, 1, 1], gap="large")
             for col_idx, col in enumerate(cols):
                 idx = row * 3 + col_idx
                 if idx < len(names):
