@@ -105,7 +105,14 @@ def recommendation_movies(movie_name, cosine_sim, df, top_n=12):
 # Streamlit UI
 # -----------------------------
 st.set_page_config(page_title="Movie Recommender", layout="centered")
-st.title("🎬 Movie Recommendation 🎬")
+st.markdown(
+    """
+    <h1 style='text-align: center; font-size: 28px; white-space: nowrap;'>
+        🎬 Movie Recommendation 🎬
+    </h1>
+    """,
+    unsafe_allow_html=True
+)
 
 selected_movie_name = st.selectbox(
     "Choose a movie:",
